@@ -7,7 +7,6 @@ https://wiki.illinois.edu/wiki/display/cs411sfa18/MochaLatte
 
 https://mochalatte.web.illinois.edu/
 
-https://mochalatte.web.illinois.edu/
 
 ### Tech Stack:
 

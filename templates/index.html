@@ -4,13 +4,15 @@
   <title>MochaLatte</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
+  <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">-->
   
 </head>
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">MochaLatte</a>
+        <a class="navbar-brand" href="/">MochaLatte</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -19,65 +21,90 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>          
         </ul>
         <ul class="navbar-nav right">
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
-          <li>
-            <a class="nav-link" href="#">Sign Up</a>
-          </li>   
-        </ul>
-        
+            <a class="nav-link" href="/profile-page">Profile</a>
+          </li> 
+        </ul>  
       </div>
-      
-    </div>
-    
-  </nav>
-<!--
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
 
-      <div class="navbar-header">
-         BELOW IS THE BUTTON THAT THE NAV BAR SHRINKS INTO 
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a href="#" class="navbar-brand"><i class="fas fa-coffee"></i> MochaLatte</a> 
-      </div>
-      
-      <div class="collapse navbar-collapse" id="bs-nav-demo">
-        <ul class="nav navbar-nav">
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Sign Up</a></li>
-          <li><a href="#">Login</a></li>
-        </ul>
-      </div> 
     </div>
-  </nav>-->
+  </nav>
 
 
   <div class="container">
     <div class="jumbotron form-group row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">     
       </div>
-      <div class="col-sm-4">
-        <div class='input-group date' id='datetimepicker1'>
-              <input type='text' class="form-control" placeholder="Date"/>
-              <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-              </span>
+      <div class="col-sm-6">
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <select class="form-control" id="monthForm">
+              <option>--Month--</option>
+              <option>January</option>
+              <option>February</option>
+              <option>March</option>
+              <option>April</option>
+              <option>May</option>
+              <option>June</option>
+              <option>July</option>
+              <option>August</option>
+              <option>September</option>
+              <option>October</option>
+              <option>November</option>
+              <option>December</option>
+            </select>
           </div>
+          <div class="col-sm-4">
+            <select class="form-control" id="dayForm">
+              <option>--Day--</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+              <option>16</option>
+              <option>17</option>
+              <option>18</option>
+              <option>19</option>
+              <option>20</option>
+              <option>21</option>
+              <option>22</option>
+              <option>23</option>
+              <option>24</option>
+              <option>25</option>
+              <option>26</option>
+              <option>28</option>
+              <option>29</option>
+              <option>30</option>
+              <option>31</option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control" id="yearForm">
+              <option>2018</option>
+              <option>2019</option>
+            </select>
+          </div>
+        </div>
+ 
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <button type="submit" class="btn btn-primary mb-2" id="search-button">Search</button>
       </div>
     </div>
   </div>

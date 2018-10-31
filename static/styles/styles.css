@@ -1,3 +1,13 @@
 body {
 	padding-top: 50px;
 }
+
+
+
+div.form-group div.col-sm-4 {
+	padding-right: 0;
+}
+
+#search-button {
+	
+}

@@ -1,13 +1,19 @@
-body {
-	padding-top: 50px;
-}
-
-
 
 div.form-group div.col-sm-4 {
 	padding-right: 0;
 }
 
-#search-button {
-	
+
+.jumbotron {
+	margin-top: 80px;
+	margin-bottom: 50px;
+	padding: 40px;
+}
+
+#tab {
+	background-color: '#81cfe0';
+}
+
+#tabNav {
+	margin-top: 100px;
 }

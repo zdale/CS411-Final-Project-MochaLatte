@@ -13,8 +13,13 @@ def homepage():
 
 
 @app.route('/profile-page')
-def loginpage():
-	return render_template("profile-page.html")
+def profile():
+	return render_template("profile-page.html", HOTEL_DICT=HOTEL_DICT, AIRBNB_DICT=AIRBNB_DICT)
+
+@app.route('/login')
+def login():
+	return render_template("login.html")
+
 
 if __name__ == "__main__":
 	app.run()

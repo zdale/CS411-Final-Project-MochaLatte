@@ -1,12 +1,12 @@
 {% extends "header.html" %}
 
 
-{% block body %} 
+{% block body %}
 
 <div class="container">
     <div class="jumbotron form-group row">
       <div class="col-sm-4">
-        <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">     
+        <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">
       </div>
       <div class="col-sm-6">
         <div class="form-group row">
@@ -69,7 +69,7 @@
             </select>
           </div>
         </div>
- 
+
       </div>
       <div class="col-sm-2">
         <button type="submit" class="btn btn-primary mb-2" id="search-button">Search</button>
@@ -86,10 +86,10 @@
           </div>
           <div class="col-sm-6" style="margin-left:20px;">
             <h5>{{AIRBNB_DICT[a][0]}}</h5>
-            <p>${{AIRBNB_DICT[a][1]}} per night</p> 
+            <p>${{AIRBNB_DICT[a][1]}} per night</p>
           </div>
         </div>
-        {% endfor %}  
+        {% endfor %}
       </div>
 
       <div class="col-lg-6">
@@ -101,18 +101,18 @@
           </div>
           <div class="col-sm-6" style="margin-left:20px;">
             <h5>{{HOTEL_DICT[h][0]}}</h5>
-            <p>${{HOTEL_DICT[h][1]}} per night</p> 
+            <p>${{HOTEL_DICT[h][1]}} per night</p>
           </div>
         </div>
-        
+
         {% endfor %}
       </div>
-      
+
     </div>
 
-    
- 
-       
+
+
+
 
   </div>
 

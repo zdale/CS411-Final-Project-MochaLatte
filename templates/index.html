@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
   <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">-->
-  
+
 </head>
 <body>
 
@@ -22,13 +22,17 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-          </li>          
+          </li>
         </ul>
         <ul class="navbar-nav right">
           <li class="nav-item">
             <a class="nav-link" href="/profile-page">Profile</a>
-          </li> 
-        </ul>  
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/profile-page">Sign Up</a>
+          </li>
+        </ul>
       </div>
 
     </div>
@@ -38,7 +42,7 @@
   <div class="container">
     <div class="jumbotron form-group row">
       <div class="col-sm-4">
-        <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">     
+        <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">
       </div>
       <div class="col-sm-6">
         <div class="form-group row">
@@ -101,7 +105,7 @@
             </select>
           </div>
         </div>
- 
+
       </div>
       <div class="col-sm-2">
         <button type="submit" class="btn btn-primary mb-2" id="search-button">Search</button>

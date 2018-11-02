@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>MochaLatte Login</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
-</head>
-<body>
+{% extends "header.html" %}
 
-  <div class="container jumbotron">
+
+{% block body %} 
+
+  <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-4">
+      <div class="col-lg-4 jumbotron">
         <form>
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
@@ -32,3 +28,5 @@
 
 </body>
 </html>
+
+{% endblock %}

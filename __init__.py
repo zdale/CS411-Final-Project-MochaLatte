@@ -18,8 +18,9 @@ def homepage():
 
 
 @app.route('/profile-page')
-def profilepage():
-	return render_template("profile-page.html")
+def profile():
+	return render_template("profile-page.html", HOTEL_DICT=HOTEL_DICT, AIRBNB_DICT=AIRBNB_DICT)
+
 
 
 @app.route('/login-page', methods=["GET", "POST"])

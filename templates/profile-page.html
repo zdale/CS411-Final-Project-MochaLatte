@@ -3,18 +3,74 @@
 
 {% block body %} 
 
+<div class="container">
+  <div class="jumbotron row">
+    <div class="col-lg-2">
+      <img src="{{ url_for('static', filename='media/default-avatar.png') }}" class="rounded" style="height:150px; width:150px;">
+    </div>
+    <div class="col-lg-6" style="margin-left: 30px;">
+      <h2>FirstName LastName</h2>
+      <p>UserID: 1234567</p>
+      <p>Email: default-profile@mochalatte.com</p>
+      
+    </div>  
+  </div>  
+</div>
+
 <div class="container" id="tabNav">
   <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+    <a class="nav-item nav-link active" id="nav-fav-tab" data-toggle="tab" href="#nav-fav" role="tab" aria-controls="nav-fav" aria-selected="true">Favorites</a>
+    <a class="nav-item nav-link" id="nav-hist-tab" data-toggle="tab" href="#nav-hist" role="tab" aria-controls="nav-hist" aria-selected="false">History</a>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
-  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+
+  <div class="tab-pane fade show active" id="nav-fav" role="tabpanel" aria-labelledby="nav-fav-tab">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+          {% for a in AIRBNB_DICT %}
+          <div class="jumbotron row" style="margin:20px; padding: 20px;">
+            <div class="col-sm-2">
+              <img src="{{AIRBNB_DICT[a][2]}}" class="rounded" style="height:150px; width:150px;">
+            </div>
+            <div class="col-sm-6" style="margin-left: 70px;">
+              <h5>{{AIRBNB_DICT[a][0]}}</h5>
+              <p>${{AIRBNB_DICT[a][1]}} per night</p> 
+            </div>
+            <div class="col-sm-2">
+              <button type="button" class="btn btn-danger">Unfavorite</button>
+            </div>
+          </div>
+          {% endfor %}  
+        </div>
+    </div> 
+  </div>
+    
+
+  <div class="tab-pane fade" id="nav-hist" role="tabpanel" aria-labelledby="nav-hist-tab">
+    <div class="row justify-content-center">
+      <button class="btn btn-danger" style="margin:40px;">Clear all history</button>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+          {% for a in AIRBNB_DICT %}
+          <div class="jumbotron row" style="margin:20px; padding: 20px;">
+            <div class="col-sm-2">
+              <img src="{{AIRBNB_DICT[a][2]}}" class="rounded" style="height:150px; width:150px;">
+            </div>
+            <div class="col-sm-6" style="margin-left: 70px;">
+              <h5>{{AIRBNB_DICT[a][0]}}</h5>
+              <p>${{AIRBNB_DICT[a][1]}} per night</p> 
+            </div>
+            <div class="col-sm-2">
+              <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+          {% endfor %}  
+        </div>
+    </div>
+  </div>
 </div>
   
 </div>

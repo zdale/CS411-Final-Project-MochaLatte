@@ -4,25 +4,36 @@
 
 <body>
 	<div class = "container">
-		<h4>Register</h4>
-		<br>
-		{% from "_formhelpers.html" import render_field %}
-		<form method=post action="/register-page">
-			<dl>
-				{{render_field(form.username)}}
-				{{render_field(form.email)}}
-				{{render_field(form.password)}}
-				{{render_field(form.confirm)}}
-				{{render_field(form.accept_tos)}}
-			</dl>
-			<p><input type=submit value=Register></p>
-		</form>
-
-		{% if error %}
-			<p class="error"><strong>Error:</strong>{{error}}</p>
-		{% endif %}
+		
 
 	</div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-4 jumbotron">
+        <h4>Register</h4>
+        <br>
+        {% from "_formhelpers.html" import render_field %}
+        <form method=post action="/register-page">
+          <dl>
+            {{render_field(form.username)}}
+            {{render_field(form.email)}}
+            {{render_field(form.password)}}
+            {{render_field(form.confirm)}}
+            {{render_field(form.accept_tos)}}
+          </dl>
+          <p><input type=submit value=Register></p>
+        </form>
+
+        {% if error %}
+          <p class="error"><strong>Error:</strong>{{error}}</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+
 </body>
 
 {% endblock %}

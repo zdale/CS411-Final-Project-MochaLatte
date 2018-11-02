@@ -21,21 +21,40 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
         </ul>
+
         <ul class="navbar-nav right">
-          <li class="nav-item">
-            <a class="nav-link" href="/profile-page">Profile</a>
-          </li>
+            {% if session.logged_in %}
+            <li class="nav-item">
+                <a class="nav-link" href="/profile-page">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/register-page">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login-page">Login</a>
+            </li>
+          {%endif%}
 
-          <li class="nav-item">
-            <a class="nav-link" href="/login-page">Login</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/register-page">Sign Up</a>
-          </li>
         </ul>
-      </div>
 
+            <!-- Code for display flash, can be moved to other html for better dispay result -->
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" arial-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                        {{message}}
+                    </div>
+                  {% endfor%}
+                {% endif %}
+              {% endwith %}
+      </div>
     </div>
   </nav>
 

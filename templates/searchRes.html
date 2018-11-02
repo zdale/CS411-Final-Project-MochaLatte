@@ -1,0 +1,58 @@
+{% extends "header.html" %}
+
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h2>AirBnBs:</h2>
+        {% if AIRBNB == None %}
+            <p5>No results find for Airbnb</p5>
+        {% else %}
+
+               <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                   <div class="col-sm-4">
+                       <img src="{{AIRBNB[0][4]}}" class="rounded" style="height:150px; width:150px;">
+                   </div>
+                   <div class="col-sm-6" style="margin-left:20px;">
+                       <h5>{{AIRBNB[0][1]}}</h5>
+                       <h8>Location: {{AIRBNB[0][2]}}, {{AIRBNB[0][3]}}</h8>
+                       <p>${{AIRBNB[0][6]}} per night</p>
+                       <div class="col-sm-2">
+                         <button type="button" class="btn btn-danger">Favorite</button>
+                       </div>
+                   </div>
+               </div>
+
+        {% endif %}
+
+    </div>
+
+      <div class="col-lg-6">
+        <h2>Hotels:</h2>
+        {% if HOTEL == None %}
+            <p5>No results find for Hotel</p5>
+        {% else %}
+        <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                   <div class="col-sm-4">
+                       <img src="{{HOTEL[5]}}" class="rounded" style="height:150px; width:150px;">
+                   </div>
+                   <div class="col-sm-6" style="margin-left:20px;">
+                       <h5>{{HOTEL[1]}}</h5>
+                       <h8>Location: {{HOTEL[2]}}, {{HOTEL[3]}}</h8>
+                       <p>${{HOTEL[4]}} per night</p>
+                       <div class="col-sm-2">
+                         <button type="button" class="btn btn-danger">Favorite</button>
+                       </div>
+                   </div>
+        </div>
+         {% endif %}
+
+      </div>
+
+    </div>
+</div>
+
+{% endblock %}

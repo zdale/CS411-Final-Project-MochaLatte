@@ -4,6 +4,9 @@ from content_management import Hotels, Airbnbs
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from MySQLdb import escape_string as thwart
+
+from functools import wraps
+
 import gc
 from dbconnect import connection
 
@@ -12,40 +15,137 @@ AIRBNB_DICT = Airbnbs()
 
 app = Flask(__name__)
 
-@app.route('/')
+class SearchForm(Form):
+	searchLoc = TextField('searchLoc', [validators.Length(min=1, max=20)])
+
+@app.route('/', methods=["GET","POST"])
 def homepage():
-	return render_template("search-page.html", HOTEL_DICT=HOTEL_DICT, AIRBNB_DICT=AIRBNB_DICT)
+	try:
+		c, conn = connection()
+		form = SearchForm(request.form)
+		if request.method == "POST":
+			session['Location'] = form.searchLoc.data
+			return redirect(url_for("searchResPage"))
+
+		airbnbSql = "SELECT * FROM airbnbs" #TODO: improve efficiency
+		airbnbdata = c.execute(airbnbSql)
+		airbnbdata = c.fetchmany(10)
+
+		hotelSql = "SELECT * FROM hotels"
+		hoteldata = c.execute(hotelSql)
+		hoteldata = c.fetchmany(10)
+
+		c.close()
+		conn.close()
+		gc.collect()
+		return render_template("search-page.html", AIRBNB=airbnbdata, HOTEL=hoteldata)
+	except Exception as e: #TODO: need to remove after done
+		return render_template("search-page.html", error = e)
+
+
+@app.route('/searchRes')
+def searchResPage():
+	try:
+		c, conn = connection()
+		airbnbSql = "SELECT * FROM airbnbs WHERE state = (%s)"
+		airbnbdata = c.execute(airbnbSql, (thwart(session['Location']),))
+
+		hotelSql = "SELECT * FROM hotels WHERE state = (%s)"
+		location = ' '+ session['Location']
+		hoteldata = c.execute(hotelSql, (thwart(location),))
+
+		if int(airbnbdata) > 0:
+			airbnbdata = c.fetchall()
+		else:
+			airbnbdata = None
+
+		if int(hoteldata) > 0:
+			hoteldata = c.fetchone()
+		else:
+			hoteldata = None
+
+		return render_template("searchRes.html",AIRBNB=airbnbdata,
+										HOTEL=hoteldata)
+
+
+		c.close()
+		conn.close()
+		gc.collect()
+		return redirect(url_for("homepage"))
+
+
+	except Exception as e: #TODO: need to remove after done
+		flash(e)
+		return redirect(url_for("homepage"))
 
 
 @app.route('/profile-page')
 def profile():
-	return render_template("profile-page.html", HOTEL_DICT=HOTEL_DICT, AIRBNB_DICT=AIRBNB_DICT)
+	uid = session['uid']
+	username = session['username']
+	email = session['email']
+
+	return render_template("profile-page.html",
+							HOTEL_DICT=HOTEL_DICT,
+							AIRBNB_DICT=AIRBNB_DICT,
+							username=username, uid=uid, email=email)
+
+
+#login in decorator
+def login_required(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash("You need to login first")
+			return redirect(url_for("loginpage"))
+	return wrap
+
+
+@app.route("/logout")
+@login_required
+def logout():
+	session.clear()
+	flash("You have been logged out!")
+	gc.collect()
+	return redirect(url_for("homepage"))
 
 
 
 @app.route('/login-page', methods=["GET", "POST"])
 def loginpage():
-	error = ""
+	error = ''
 	try:
+		c, conn = connection()
 		if request.method == "POST":
-			#Get data from html form
-			attempted_username = request.form['username']
-			attempted_password = request.form['password']
+			data = c.execute("SELECT * FROM users WHERE email = (%s)",
+					(thwart(request.form['email']),))
+			data = c.fetchone()
+			pswd = data[2] #hashed password
 
-			#TODO: delete afterward
-			flash(attempted_username)
-			flash(attempted_password)
+			#comparing password
+			if sha256_crypt.verify(request.form['password'], pswd):
+				#change session info
+				session['logged_in'] = True
+				session['uid'] = data[0]
+				session['username'] = data[1]
+				session['email'] = data[3]
 
-			if attempted_username == "admin" and attempted_password == "password":
+
+				flash("Your are now logged in!")
 				return redirect(url_for("homepage"))
-			else:
-				error = "Invalid credentials. Try Again."
 
+			else:
+				error = "Invalid password, try again."
+		c.close()
+		conn.close()
+		gc.collect()
 		return render_template("login.html", error = error)
 
 
 	except Exception as e: #TODO: need to remove after done
-		#flash(e)
+		error = "Invalid username, try again."
 		return render_template("login.html", error = error)
 
 
@@ -86,12 +186,18 @@ def registerpage():
 
 				flash("Thanks for registering!")
 
+				data = c.execute("SELECT * FROM users WHERE username = (%s)",
+						(thwart(username),))
+				data = c.fetchone()
+
+				session['logged_in'] = True
+				session['uid'] = data[0]
+				session['username'] = data[1]
+				session['email'] = data[3]
+
 				c.close()
 				conn.close()
 				gc.collect() #need to use gc collect when conenct to database
-
-				session['logged_in'] = True
-				session['username'] = username
 
 				return redirect(url_for('homepage'))
 		return render_template("register.html", form=form)
@@ -102,5 +208,5 @@ def registerpage():
 
 if __name__ == "__main__":
 	app.secret_key = 'mocha latte'
-	
+
 	app.run()

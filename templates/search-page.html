@@ -4,116 +4,84 @@
 {% block body %}
 
 <div class="container">
-    <div class="jumbotron form-group row">
-      <div class="col-sm-4">
-        <input class="form-control" type="text" placeholder="Enter a location!" aria-label="Search">
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group row">
-          <div class="col-sm-4">
-            <select class="form-control" id="monthForm">
-              <option>--Month--</option>
-              <option>January</option>
-              <option>February</option>
-              <option>March</option>
-              <option>April</option>
-              <option>May</option>
-              <option>June</option>
-              <option>July</option>
-              <option>August</option>
-              <option>September</option>
-              <option>October</option>
-              <option>November</option>
-              <option>December</option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <select class="form-control" id="dayForm">
-              <option>--Day--</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-              <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
-              <option>20</option>
-              <option>21</option>
-              <option>22</option>
-              <option>23</option>
-              <option>24</option>
-              <option>25</option>
-              <option>26</option>
-              <option>28</option>
-              <option>29</option>
-              <option>30</option>
-              <option>31</option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <select class="form-control" id="yearForm">
-              <option>2018</option>
-              <option>2019</option>
-            </select>
-          </div>
-        </div>
 
+    <form method="post" action="">
+        <div class="jumbotron form-group row">
+      <div class="col-sm-4">
+              <input class="form-control" type="text" placeholder="Enter a state" aria-label="Search"
+              name="searchLoc" value="{{request.form.searchLoc}}">
       </div>
+
+      <div class="col-sm-6">
+          <div class="form-group row">
+              <div class="col-sm-4">
+                  <select class="form-control" id="roomNum">
+                      <option>--Room--</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary mb-2" id="search-button">Search</button>
+          <input type="submit" class="btn btn-primary" value="Search">
       </div>
-    </div>
+   </div>
+</form>
+
 
     <div class="row">
       <div class="col-lg-6">
         <h2>AirBnBs:</h2>
-        {% for a in AIRBNB_DICT %}
+        {% for i in range(10) %}
         <div class="jumbotron row" style="margin:20px; padding: 20px;">
-          <div class="col-sm-4">
-            <img src="{{AIRBNB_DICT[a][2]}}" class="rounded" style="height:150px; width:150px;">
-          </div>
-          <div class="col-sm-6" style="margin-left:20px;">
-            <h5>{{AIRBNB_DICT[a][0]}}</h5>
-            <p>${{AIRBNB_DICT[a][1]}} per night</p>
-          </div>
+            <div class="col-sm-4">
+                <img src="{{AIRBNB[i][4]}}" class="rounded" style="height:150px; width:150px;">
+            </div>
+            <div class="col-sm-6" style="margin-left:20px;">
+                <h5>{{AIRBNB[i][1]}}</h5>
+                <h8>Location: {{AIRBNB[i][2]}}, {{AIRBNB[i][3]}}</h8>
+                <p>${{AIRBNB[i][6]}} per night</p>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-danger">Favorite</button>
+                </div>
+            </div>
         </div>
         {% endfor %}
       </div>
 
       <div class="col-lg-6">
         <h2>Hotels:</h2>
-        {% for h in HOTEL_DICT %}
+        {% for i in range(10) %}
         <div class="jumbotron row" style="margin:20px; padding: 20px;">
-          <div class="col-sm-4">
-            <img src="{{HOTEL_DICT[h][2]}}" class="rounded" style="height:150px; width:150px;">
-          </div>
-          <div class="col-sm-6" style="margin-left:20px;">
-            <h5>{{HOTEL_DICT[h][0]}}</h5>
-            <p>${{HOTEL_DICT[h][1]}} per night</p>
-          </div>
+            <div class="col-sm-4">
+                <img src="{{HOTEL[i][5]}}" class="rounded" style="height:150px; width:150px;">
+            </div>
+            <div class="col-sm-6" style="margin-left:20px;">
+                <h5>{{HOTEL[i][1]}}</h5>
+                <h8>Location: {{HOTEL[i][2]}}, {{HOTEL[i][3]}}</h8>
+                <p>${{HOTEL[i][4]}} per night</p>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-danger">Favorite</button>
+                </div>
+            </div>
         </div>
-
         {% endfor %}
+
       </div>
 
     </div>
-
-
-
-
-
   </div>
 
 {% endblock %}

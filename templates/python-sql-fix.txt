@@ -1,0 +1,3 @@
+install python 3
+brew install mysql
+pip3 install mysqlclient

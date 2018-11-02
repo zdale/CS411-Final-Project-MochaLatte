@@ -10,6 +10,8 @@ from functools import wraps
 import gc
 from dbconnect import connection
 
+import datetime
+
 HOTEL_DICT = Hotels()
 AIRBNB_DICT = Airbnbs()
 
@@ -25,6 +27,10 @@ def homepage():
 		form = SearchForm(request.form)
 		if request.method == "POST":
 			session['Location'] = form.searchLoc.data
+			if session.get('logged_in') == True:
+				c.execute("INSERT INTO search_history (uid, query, time) VALUES (%s, %s, %s)",
+						(session['uid'], thwart(session['Location']), datetime.datetime.now()))
+				conn.commit()
 			return redirect(url_for("searchResPage"))
 
 		airbnbSql = "SELECT * FROM airbnbs" #TODO: improve efficiency
@@ -47,15 +53,15 @@ def homepage():
 def searchResPage():
 	try:
 		c, conn = connection()
-		airbnbSql = "SELECT * FROM airbnbs WHERE state = (%s)"
-		airbnbdata = c.execute(airbnbSql, (thwart(session['Location']),))
+		airbnbSql = "SELECT * FROM airbnbs WHERE state = (%s) OR city = (%s)"
+		airbnbdata = c.execute(airbnbSql, (thwart(session['Location']),thwart(session['Location'])))
 
-		hotelSql = "SELECT * FROM hotels WHERE state = (%s)"
+		hotelSql = "SELECT * FROM hotels WHERE state = (%s) OR city = (%s)"
 		location = ' '+ session['Location']
-		hoteldata = c.execute(hotelSql, (thwart(location),))
+		hoteldata = c.execute(hotelSql, (thwart(location),thwart(location)))
 
 		if int(airbnbdata) > 0:
-			airbnbdata = c.fetchall()
+			airbnbdata = c.fetchone()
 		else:
 			airbnbdata = None
 
@@ -79,16 +85,62 @@ def searchResPage():
 		return redirect(url_for("homepage"))
 
 
-@app.route('/profile-page')
+@app.route('/profile-page', methods=["GET","POST"])
 def profile():
 	uid = session['uid']
-	username = session['username']
 	email = session['email']
+
+	c, conn = connection()
+	username = c.execute("SELECT * FROM users WHERE uid = (%s)",
+					(session['uid'],))
+	username = c.fetchone()
+	username = username[1]
+
+	historySql = "SELECT * FROM search_history WHERE uid = (%s)"
+	historydata = c.execute(historySql, (session['uid'],))
+	queryCount = int(historydata)
+	historydata = c.fetchall()
+
+	if request.method == "POST":
+		if request.form["clear-button"] == "Clear all history":
+			deleteAllSql = "DELETE FROM search_history WHERE uid = (%s)"
+			deleteAll = c.execute(deleteAllSql, (session['uid'],))
+			conn.commit()
+			queryCount = 0
+		# if request.form["edit-button"] == "Edit Profile":
+		# 	#TODO: figure out a way to make a pop-up window
+		# 	return redirect(url_for("editProfile"))
+
+	c.close()
+	conn.close()
+	gc.collect()
 
 	return render_template("profile-page.html",
 							HOTEL_DICT=HOTEL_DICT,
 							AIRBNB_DICT=AIRBNB_DICT,
-							username=username, uid=uid, email=email)
+							username=username, uid=uid, email=email,
+							history=historydata, queryCount=queryCount)
+
+
+@app.route('/edit-profile', methods=["GET","POST"])
+def editProfile():
+	try:
+		c, conn = connection()
+		if request.method == "POST":
+
+			c.execute("UPDATE users SET username = (%s) WHERE uid = (%s)",
+				(thwart(request.form['username']), session['uid']))
+			conn.commit()
+			flash("Save Successfully!")
+			return redirect(url_for("profile"))
+		c.close()
+		conn.close()
+		gc.collect()
+		return render_template("edit-profile.html")
+
+	except Exception as e: #TODO: debugging purpose, delete when done
+		return render_template("edit-profile.html")
+
 
 
 #login in decorator
@@ -129,7 +181,6 @@ def loginpage():
 				#change session info
 				session['logged_in'] = True
 				session['uid'] = data[0]
-				session['username'] = data[1]
 				session['email'] = data[3]
 
 
@@ -192,7 +243,6 @@ def registerpage():
 
 				session['logged_in'] = True
 				session['uid'] = data[0]
-				session['username'] = data[1]
 				session['email'] = data[3]
 
 				c.close()

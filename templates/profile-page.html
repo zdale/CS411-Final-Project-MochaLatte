@@ -13,6 +13,7 @@
       <p>UserID: {{uid}}</p>
       <p>Email: {{email}}</p>
 
+      <a class="btn btn-primary" href="/edit-profile">Edit Profile</a>
     </div>
   </div>
 </div>
@@ -49,25 +50,22 @@
 
 
   <div class="tab-pane fade" id="nav-hist" role="tabpanel" aria-labelledby="nav-hist-tab">
-    <div class="row justify-content-center">
-      <button class="btn btn-danger" style="margin:40px;">Clear all history</button>
-    </div>
+    <form method="post" action="">
+        <div class="row justify-content-center">
+            <input type="submit" name="clear-button" value="Clear all history" class="btn btn-danger" style="margin:40px;">
+        </div>
+    </form>
+
     <div class="row justify-content-center">
         <div class="col-lg-8">
-          {% for a in AIRBNB_DICT %}
-          <div class="jumbotron row" style="margin:20px; padding: 20px;">
-            <div class="col-sm-2">
-              <img src="{{AIRBNB_DICT[a][2]}}" class="rounded" style="height:150px; width:150px;">
+            {% for i in range(queryCount) %}
+            <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                <div class="col-sm-6" style="margin-left: 70px;">
+                    <h5>{{history[i][2]}}</h5>
+                    <h7>{{history[i][3]}}</h7>
+                </div>
             </div>
-            <div class="col-sm-6" style="margin-left: 70px;">
-              <h5>{{AIRBNB_DICT[a][0]}}</h5>
-              <p>${{AIRBNB_DICT[a][1]}} per night</p>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
         </div>
     </div>
   </div>

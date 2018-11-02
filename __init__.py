@@ -25,7 +25,7 @@ def profile():
 
 @app.route('/login-page', methods=["GET", "POST"])
 def loginpage():
-	#error = None
+	error = ""
 	try:
 		if request.method == "POST":
 			#Get data from html form
@@ -41,22 +41,23 @@ def loginpage():
 			else:
 				error = "Invalid credentials. Try Again."
 
-		return render_template("login.html")
+		return render_template("login.html", error = error)
 
 
 	except Exception as e: #TODO: need to remove after done
-		flash(e)
-		return render_template("login.html")
+		#flash(e)
+		return render_template("login.html", error = error)
 
 
 class RegistrationForm(Form):
-	username = TextField('Username', [validators.Length(min=4, max=20)])
-	email = TextField('Email Address', [validators.Length(min=6, max=50)])
-	password = PasswordField('Password', [validators.Required(),
-											validators.EqualTo('confirm', message="Passwords must match")])
-	confirm = PasswordField('Repeat Password')
-
-	accept_tos = BooleanField('I accept the <a href="/tos/">Terms of Service</a> and the <a href="/privacy/">Privacy Notice</a> (updated Nov 1, 2018 )', [validators.Required()])
+    username = TextField('Username', [validators.Length(min=4, max=20)])
+    email = TextField('Email Address', [validators.Length(min=6, max=50)])
+    password = PasswordField('Password', [
+        validators.Required(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
+    accept_tos = BooleanField('I accept the <a href="/tos/">Terms of Service</a> and the <a href="/privacy/">Privacy Notice</a> (updated Jan 22, 2015)', [validators.Required()])
 
 
 @app.route('/register-page', methods=["GET", "POST"])
@@ -71,15 +72,15 @@ def registerpage():
 			c, conn = connection()
 
 			x = c.execute("SELECT * FROM users WHERE username = (%s)",
-						(thwart(username)))
+						(thwart(username),))
 
-			if int(len(x)) > 0:
+			if int(x) > 0:
 				flash("That username is already taken, please choose another")
 				return render_template("register.html", form = form)
 
 			else:
 				c.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)",
-						(thatwart(username), thatwart(password), thatwart(email)))
+						(thwart(username), thwart(password), thwart(email)))
 
 				conn.commit()
 
@@ -100,4 +101,6 @@ def registerpage():
 
 
 if __name__ == "__main__":
+	app.secret_key = 'mocha latte'
+	
 	app.run()

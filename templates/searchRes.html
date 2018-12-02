@@ -4,55 +4,69 @@
 {% block body %}
 
 <div class="container" style="margin-top: 70px;">
+    {% if cap == 0 %}
+        <p>Results displayed for Airbnbs & Hotels in <b>{{searchLoc}}</b></p>
+    {% else %}
+        <p>Results displayed for Airbnbs & Hotels in <b>{{searchLoc}}</b> with <b>{{cap}}</b> guests</p>
+    {% endif %}
 
     <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <h2>AirBnBs:</h2>
-        {% if AIRBNB == None %}
-            <p5>No results find for Airbnb</p5>
-        {% else %}
-
-               <div class="jumbotron row" style="margin:20px; padding: 20px;">
-                   <div class="col-sm-4">
-                       <img src="{{AIRBNB[0][4]}}" class="rounded" style="height:150px; width:150px;">
-                   </div>
-                   <div class="col-sm-6" style="margin-left:20px;">
-                       <h5>{{AIRBNB[0][1]}}</h5>
-                       <h8>Location: {{AIRBNB[0][2]}}, {{AIRBNB[0][3]}}</h8>
-                       <p>${{AIRBNB[0][6]}} per night</p>
-                       <div class="col-sm-2">
-                         <button type="button" class="btn btn-danger">Favorite</button>
-                       </div>
-                   </div>
-               </div>
-
-        {% endif %}
-
-    </div>
-
-      <div class="col-lg-6">
-        <h2>Hotels:</h2>
-        {% if HOTEL == None %}
-            <p5>No results find for Hotel</p5>
-        {% else %}
-        <div class="jumbotron row" style="margin:20px; padding: 20px;">
-                   <div class="col-sm-4">
-                       <img src="{{HOTEL[5]}}" class="rounded" style="height:150px; width:150px;">
-                   </div>
-                   <div class="col-sm-6" style="margin-left:20px;">
-                       <h5>{{HOTEL[1]}}</h5>
-                       <h8>Location: {{HOTEL[2]}}, {{HOTEL[3]}}</h8>
-                       <p>${{HOTEL[4]}} per night</p>
-                       <div class="col-sm-2">
-                         <button type="button" class="btn btn-danger">Favorite</button>
-                       </div>
-                   </div>
+        <div class="col-lg-6">
+            <h2>AirBnBs:</h2>
+                {% if AIRNUM == 0 %}
+                    <p5>No results find for Airbnb</p5>
+                {% else %}
+                    <p5>{{AIRNUM}} airbnbs found</p5>
+                    {% for i in range(AIRNUM) %}
+                        <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                            <div class="col-sm-4">
+                                <img src="{{AIRBNB[i][5]}}" class="rounded" style="height:150px; width:150px;">
+                            </div>
+                            <div class="col-sm-6" style="margin-left:20px;">
+                                <h5>{{AIRBNB[i][1]}}</h5>
+                                <h8>Location: {{AIRBNB[i][3]}}, {{AIRBNB[i][4]}}</h8>
+                                <p>${{AIRBNB[i][9]}} per night for {{AIRBNB[i][10]}}</p>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-danger">Favorite</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
         </div>
-         {% endif %}
 
-      </div>
-
+        <div class="col-lg-6">
+            <h2>Hotels:</h2>
+                {% if HOTELNUM == 0 %}
+                    <p5>No results find for hotels</p5>
+                {% else %}
+                    <p5>{{HOTELNUM}} hotels found</p5>
+                    {% for i in range(HOTELNUM) %}
+                        <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                            <div class="col-sm-4">
+                                <img src="{{HOTEL[i][4]}}" class="rounded" style="height:150px; width:150px;">
+                            </div>
+                            <div class="col-sm-6" style="margin-left:20px;">
+                                <h5>{{HOTEL[i][1]}}</h5>
+                                <h8>Location: {{HOTEL[i][2]}}, {{HOTEL[i][3]}}</h8>
+                                {% if priceType == 2 %}
+                                    <p>${{HOTEL[i][10]}} per night for {{HOTEL[i][11]}}</p>
+                                {% elif priceType == 3 %}
+                                    <p>${{HOTEL[i][7]}} per night for {{HOTEL[i][8]}}</p>
+                                    <p>${{HOTEL[i][10]}} per night for {{HOTEL[i][11]}}</p>
+                                {% else %}
+                                    <p>${{HOTEL[i][7]}} per night for {{HOTEL[i][8]}}</p>
+                                {% endif %}
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-danger">Favorite</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        </div>
     </div>
+
 </div>
 
 {% endblock %}

@@ -12,7 +12,7 @@ https://mochalatte.web.illinois.edu/
 
 Client-side Scripting: JavaScript
 
-Server-side Scripting: Django
+Server-side Scripting: Flask
 
 WebServer: Apache (cPanel)
 

@@ -1,0 +1,56 @@
+{% macro render_search(field) %}
+    {{field(**kwargs) | safe}}
+{% endmacro %}
+
+<div class="container col-lg-8">
+
+    <form method="post" action="">
+        <div class="jumbotron form-group row justify-content-center">
+            <div class="col-md-4">
+                
+                <div class="input-group md-form form-sm form-1 pl-0">
+                    {{form.searchLoc(class="form-control my-0 py-1")}}
+                </div>
+                {% if error %}
+                    <p class="text-warning">{{error}}</p>
+                {% endif %}
+                
+            </div>
+            
+            <div class="col-md-4">
+                {{form.capacity(class="form-control")}}
+            </div>
+            
+   
+            <div class="col-md-2 ml-auto">
+                <input type="submit" name="button" class="btn btn-primary" value="Search">
+            </div>
+        </div>
+        
+        <div class="row">
+        <div class="col-md-10 ml-auto">
+
+            <div class="btn-group btn-group-toggle">
+            {% if order == "priceRec" %}
+                <button name="button" value="priceRec" class="btn btn-outline-secondary btn-sm active"> Recommendation</button>
+            {% else %}
+                <button name="button" value="priceRec" class="btn btn-outline-secondary btn-sm"> Recommendation</button>
+            {% endif %}
+            
+            {% if order == "priceLH" %}
+                <button name="button" value="priceLH" class="btn btn-outline-secondary btn-sm active"> Price Low to High</button>
+            {% else %}
+                <button name="button" value="priceLH" class="btn btn-outline-secondary btn-sm"> Price Low to High</button>
+            {% endif %}
+            
+            {% if order == "priceHL" %}
+                <button name="button" value="priceHL" class="btn btn-outline-secondary btn-sm active"> Price High to Low</button>
+            {% else %}
+                <button name="button" value="priceHL" class="btn btn-outline-secondary btn-sm"> Price High to Low</button>
+            {% endif %}
+            </div>
+        </div>
+        </div>
+
+    </form>
+</div>

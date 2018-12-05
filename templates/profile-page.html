@@ -6,7 +6,7 @@
 <div class="container">
   <div class="jumbotron row">
     <div class="col-lg-2">
-      <img src="{{ url_for('static', filename='media/default-avatar.png') }}" class="rounded" style="height:150px; width:150px;">
+      <img src="{{ url_for('static', filename=userImg) }}" class="rounded" style="height:150px; width:150px;">
     </div>
     <div class="col-lg-6" style="margin-left: 30px;">
       <h2>{{username}}</h2>
@@ -27,25 +27,178 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
 
-
+    
   <div class="tab-pane fade show active" id="nav-fav" role="tabpanel" aria-labelledby="nav-fav-tab">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-          {% for a in AIRBNB_DICT %}
-          <div class="jumbotron row" style="margin:20px; padding: 20px;">
-            <div class="col-sm-2">
-              <img src="{{AIRBNB_DICT[a][2]}}" class="rounded" style="height:150px; width:150px;">
+    <div class="row" style="padding-top: 20px;">
+        {% if airbnbCount == 0 and hotelCount == 0%}
+            <div class="col-lg-8 ml-auto">
+            <h5>Your favorite list is empty :(</h5>
             </div>
-            <div class="col-sm-6" style="margin-left: 70px;">
-              <h5>{{AIRBNB_DICT[a][0]}}</h5>
-              <p>${{AIRBNB_DICT[a][1]}} per night</p>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-danger">Unfavorite</button>
-            </div>
-          </div>
-          {% endfor %}
+        {% endif %}
+        <div class="col-lg-6">
+            {% if airbnbCount != 0 %}
+            <h2>AirBnBs:</h2>
+                {% for i in range(airbnbCount) %}
+                <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                        <div class="col-sm-4">
+                            <img src="{{fav_airbnbs[i][5]}}" class="rounded" style="height:150px; width:150px;">
+                        </div>
+                        <div class="col-sm-6" style="margin-left:20px;">
+                            <h5>{{fav_airbnbs[i][1]}}</h5>
+                            <h8>Location: {{fav_airbnbs[i][3]}}, {{fav_airbnbs[i][4]}}</h8>
+                            <p>${{fav_airbnbs[i][9]}} per night</p>
+                            <div class="btn-group">
+                                <!-- Button trigger modal-->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#airbnbModal{{fav_airbnbs[i][0]}}">
+                                    Details
+                                </button>
+                                <input type="submit" name="Fav" value="Unfavorite" class="btn btn-danger" onclick="favoriteClicked({{uid}}, {{fav_airbnbs[i][0]}}, 'airbnb', '#airbnb{{fav_airbnbs[i][0]}}')" id="airbnb{{fav_airbnbs[i][0]}}">
+                            </div>
+                            <!-- Modal -->
+                                    <div class="modal fade" id="airbnbModal{{fav_airbnbs[i][0]}}" role="dialog">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Hotel Detailed Info</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <h4 class="modal-title text-center">{{fav_airbnbs[i][1]}}</h4>
+                                                        <h8 class="text-center">Location: {{fav_airbnbs[i][2]}}</h8>
+                                               
+                                                        <div class="jumbotron row" style="margin-top: 0px;">
+                                                            <div class="col-lg-8">
+                                                                <img src="{{fav_airbnbs[i][5]}}" class="rounded" style="height:280px; width:400px;">
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <p><b>Summary: </b>{{fav_airbnbs[i][11]}}</p>
+                                                                <div class="col-md-10 ml-auto">
+                                                                    <a href="{{fav_airbnbs[i][6]}}" target="_blank" class="btn btn-primary">VIEW SITE</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-top: -20px;">
+                                                            <table class="table">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th scope="col">Room Type</th>
+                                                                        <th scope="col">Property Type</th>
+                                                                        <th scope="col">Sleeps</th>
+                                                                        <th scope="col">Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{fav_airbnbs[i][8]}}</th>
+                                                                        <td>{{fav_airbnbs[i][7]}}</td>
+                                                                        <td>{{fav_airbnbs[i][10]}}</td>
+                                                                        <td>${{fav_airbnbs[i][9]}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                        <div class="row">
+                                                            <h6><b>Amenities: </b></h6>
+                                                            <p>{{fav_airbnbs[i][12]}}</p>
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
+        
+        <div class="col-lg-6">
+            {% if hotelCount != 0 %}
+            <h2>Hotels:</h2>
+                {% for i in range(hotelCount) %}
+                <div class="jumbotron row" style="margin:20px; padding: 20px;">
+                        <div class="col-sm-4">
+                            <img src="{{fav_hotels[i][4]}}" class="rounded" style="height:150px; width:150px;">
+                        </div>
+                        <div class="col-sm-6" style="margin-left:20px;">
+                            <h5>{{fav_hotels[i][1]}}</h5>
+                            <h8>Location: {{fav_hotels[i][2]}}, {{fav_hotels[i][3]}}</h8>
+                            <p>${{fav_hotels[i][7]}} per night</p>
+                                <div class="btn-group">
+                                    <!-- Button trigger modal-->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#hotelModal{{fav_hotels[i][0]}}">
+                                        Details
+                                    </button>
+                                    <input type="submit" name="Fav" value="Unfavorite" class="btn btn-danger" onclick="favoriteClicked({{uid}}, {{fav_hotels[i][0]}}, 'hotel', '#hotel{{fav_hotels[i][0]}}')" id="hotel{{fav_hotels[i][0]}}">
+                                </div>
+                                
+                                <!-- Modal -->
+                                    <div class="modal fade" id="hotelModal{{fav_hotels[i][0]}}" role="dialog">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Hotel Detailed Info</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <h4 class="modal-title text-center">{{fav_hotels[i][1]}}</h4>
+                                                        <h8 class="text-center">Location: {{fav_hotels[i][2]}}, {{fav_hotels[i][3]}}</h8>
+                                               
+                                                        <div class="jumbotron row" style="margin-top: 0px;">
+                                                            <div class="col-lg-8">
+                                                                <img src="{{fav_hotels[i][4]}}" class="rounded" style="height:280px; width:400px;">
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <p><b>Summary: </b>{{fav_hotels[i][12]}}</p>
+                                                                <div class="col-md-10 ml-auto">
+                                                                    <a href="{{fav_hotels[i][5]}}" target="_blank" class="btn btn-primary">VIEW SITE</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <table class="table">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th scope="col">Room Type</th>
+                                                                        <th scope="col">Sleeps</th>
+                                                                        <th scope="col">Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{fav_hotels[i][6]}}</th>
+                                                                        <td>{{fav_hotels[i][8]}}</td>
+                                                                        <td>${{fav_hotels[i][7]}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">{{fav_hotels[i][9]}}</th>
+                                                                        <td>{{fav_hotels[i][11]}}</td>
+                                                                        <td>${{fav_hotels[i][10]}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
     </div>
   </div>
 
@@ -55,10 +208,10 @@
             <input type="submit" name="clear-button" value="Clear all history" class="btn btn-danger" style="margin:40px;">
         </div>
     </form>
-
+    
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            {% for i in range(queryCount) %}
+            {% for i in range(queryCountHist) %}
             <div class="jumbotron row" style="margin:20px; padding: 20px;">
                 <div class="col-sm-6" style="margin-left: 70px;">
                     <h5>{{history[i][2]}}</h5>
@@ -72,6 +225,24 @@
 </div>
 
 </div>
+
+<script>
+    function favoriteClicked(uid, itemid, h_type, html_id){
+        
+        $.ajax({
+            type: "POST",
+            url: '/favorite',
+            data: {"uid": uid, "itemid":itemid, "h_type":h_type},
+            contentType: 'application/json;charset=UTF-8',
+            success: function(result) { 
+                window.location.replace("http://mochalatte.web.illinois.edu/profile-page");
+            },
+            error: function(jqXHR) {
+                alert("error: " + jqXHR.status);
+            }
+        });
+    }
+</script>
 
 
 {% endblock %}

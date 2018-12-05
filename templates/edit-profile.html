@@ -3,32 +3,80 @@
 
 {% block body %}
 
-<body>
+
     <div class = "container">
 
 
-	</div>
+ </div>
 <div class="container">
     <div class="row justify-content-center">
          <div class="col-lg-4 jumbotron">
              <h4>Settings</h4>
              <br>
-             {% from "_formhelpers.html" import render_field %}
              <form method="post" action="/edit-profile">
                  <div class="form-group">
-                   <label for="exampleInputUsername1">New Username</label>
-                   <input type="text" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="New username"
+                    <label for="exampleInputUsername1">New Username</label>
+                   <input type="text" class="form-control" id="username" placeholder="New username"
                    name="username" value="{{request.form.username}}">
-                 </div>
+                   
+                   <label for="exampleInputUsername1">New Email</label>
+                   <input type="text" class="form-control" id="email" placeholder="New Email"
+                   name="email" value="{{request.form.email}}">
 
-                 <input type="submit" class="btn btn-primary" value="Save">
-             </form>
+                 </div>
+                 <div class="form-group col-md-3 ml-auto">
+                     <button name="editProButton" class="btn btn-primary" value="Save">Save</button>
+                 </div>
+                 
+                 <div class="form-group">
+                     <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="modal" data-target="#imageList">
+                        Choose New Profile Picture
+                    </button>
+                 </div>
+                 
+                 <div class="form-group col-md-3 ml-auto">
+                    <button name="editProButton" class="btn btn-primary" value="BackEdit">Back</button>
+                </div>
+           
+             
+             <!-- Modal -->
+                                    <div class="modal fade" id="imageList" role="dialog">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Select Your Profile Image: </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid" style="margin-left:45px;">
+                                                        {% for i in range(IMGNUM) %}
+                                                        <label>
+                                                                <img src="{{ url_for('static', filename=IMGDATA[i][1]) }}" class="img-check" style="height:150px; width:150px;">
+                                                                <div class="row col-md-9 ml-auto">
+                                                                <input type="radio" name="proImg" value={{IMGDATA[i][1]}}>
+                                                                </div>
+                                                          </label>  
+                                                        {% endfor %}
+                                                        <div class="row">
+                                                            <div class="col-md-2 ml-auto">
+                                                                <button name="editProButton" class="btn btn-primary" value="ImageSave">Save</button>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
              {% if error %}
-               <p class="error"><strong>Error:</strong>{{error}}</p>
+               <p class="error"><strong>Error:</strong>{{error}}</p >
              {% endif %}
+               </form>
          </div>
     </div>
 </div>
-</body>
+
 {% endblock %}
